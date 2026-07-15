@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>spec2mock — OpenAPI → WireMock for Kubernetes</title>
+    <meta
+      name="description"
+      content="Upload an OpenAPI spec, download a ready-to-deploy WireMock mock (Kubernetes manifests + Docker). Convert Swagger 2.0 to OpenAPI 3.0. Runs entirely in your browser."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🧩%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="head">
+        <div class="mark">spec<span>2</span>mock</div>
+        <p class="tag">OpenAPI&nbsp;→&nbsp;WireMock, packaged for Kubernetes. Everything runs in your browser — no upload, no server.</p>
+      </header>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="gen" role="tab">Generate mock</button>
+        <button class="tab" data-tab="conv" role="tab">Convert 2.0 → 3.0</button>
+      </nav>
+
+      <!-- ---------- GENERATE ---------- -->
+      <section class="panel" id="panel-gen">
+        <label id="drop-g" class="drop" for="file-g">
+          <input id="file-g" type="file" accept=".json,.yaml,.yml,application/json,text/yaml" hidden />
+          <span class="drop-title">Drop your OpenAPI spec here</span>
+          <span class="drop-sub">or click to choose — <code>.yaml</code> / <code>.json</code> (OpenAPI 3.x; 2.0 auto-converts)</span>
+        </label>
+        <div class="or">or paste</div>
+        <textarea id="paste-g" spellcheck="false" placeholder="paste OpenAPI YAML or JSON…"></textarea>
+
+        <div class="opts">
+          <label><input id="errors" type="checkbox" checked /> Include non-2xx responses (404/400/500…)</label>
+          <label><input id="cors" type="checkbox" checked /> Add permissive CORS headers</label>
+        </div>
+
+        <div class="actions">
+          <button id="generate" disabled>Generate stubs</button>
+          <button id="download" class="primary" disabled>Download ZIP bundle</button>
+        </div>
+
+        <div id="result-g" class="result"><p class="muted">Load a spec to begin.</p></div>
+      </section>
+
+      <!-- ---------- CONVERT ---------- -->
+      <section class="panel" id="panel-conv" hidden>
+        <label id="drop-c" class="drop" for="file-c">
+          <input id="file-c" type="file" accept=".json,.yaml,.yml,application/json,text/yaml" hidden />
+          <span class="drop-title">Drop your Swagger 2.0 spec here</span>
+          <span class="drop-sub">or click to choose — converts to OpenAPI <code>3.0</code></span>
+        </label>
+        <div class="or">or paste</div>
+        <textarea id="paste-c" spellcheck="false" placeholder="paste Swagger 2.0 YAML or JSON…"></textarea>
+
+        <div class="actions">
+          <button id="convert" disabled>Convert to 3.0</button>
+          <button id="dl-yaml" class="primary" disabled>Download YAML</button>
+          <button id="dl-json" disabled>Download JSON</button>
+          <button id="to-gen" disabled>Use in mock generator →</button>
+        </div>
+
+        <div id="result-c" class="result"><p class="muted">Load a Swagger 2.0 spec to convert.</p></div>
+      </section>
+
+      <section class="explain">
+        <h2>What you get</h2>
+        <ul>
+          <li><strong>Drop-in mock.</strong> Same paths, methods, status codes and content types as your API. Point tests at it; only the base URL changes.</li>
+          <li><strong>Happy path by default.</strong> Every endpoint returns its success response, so existing tests pass untouched.</li>
+          <li><strong>Errors on demand.</strong> Send <code>X-Mock-Status: 404</code> to get any documented error response for that endpoint.</li>
+          <li><strong>Kubernetes-ready.</strong> <code>kubectl apply -f k8s/</code> runs the official <code>wiremock/wiremock:3</code> image with your mappings as a ConfigMap.</li>
+          <li><strong>Swagger 2.0?</strong> Convert it to OpenAPI 3.0 in the second tab — or just drop it in the first tab and it converts automatically.</li>
+        </ul>
+      </section>
+
+      <footer class="foot">
+        Static site · your spec never leaves the browser · built for API backend testing
+      </footer>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
